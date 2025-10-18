@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Clip {
+  id        String   @id @default(cuid())
+  path      String   @unique
+  title     String?
+  duration  Int?     // seconds
+  fileSize  Int?     // bytes
+  metadata  String?  // JSON string for additional data
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  jobs      Job[]
+
+  @@map("clips")
+}
+
+model Job {
+  id         String   @id @default(cuid())
+  clipId     String
+  clip       Clip     @relation(fields: [clipId], references: [id], onDelete: Cascade)
+  platform   String   // "YOUTUBE" | "TIKTOK" | "META"
+  runAt      DateTime
+  status     String   @default("QUEUED") // "QUEUED" | "RUNNING" | "DONE" | "ERROR" | "CANCELLED"
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  resultJson String?  // Publisher response JSON
+  error      String?  // Error message if failed
+  retryCount Int      @default(0)
+
+  @@index([status, runAt])
+  @@index([platform])
+  @@map("jobs")
+}

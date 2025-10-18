@@ -65,6 +65,14 @@ samples/music/*.mp3
 !samples/**/test_*
 !samples/**/clip0*.mp4
 
+# Database files
+data/
+*.db
+*.db-journal
+
+# Publisher output (keep for debugging, but ignore in production)
+.out/
+
 # Logs
 logs/
 *.log
