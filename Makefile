@@ -33,7 +33,7 @@ pipeline:
 	pnpm run pipeline ./samples/raw/video1.mp4
 
 smoke-test:
-	node scripts/smoke-test.js
+	pnpm run test:smoke
 
 ingest:
 	pnpm run ingest

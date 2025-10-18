@@ -129,16 +129,28 @@ pnpm run build:short               # Compose final video
 ## 🧪 Testing
 
 ```bash
-# Run smoke test
-node scripts/smoke-test.js
+# Generate test fixtures (one-time setup)
+pnpm run test:fixtures
+
+# Run comprehensive smoke test
+pnpm run test:smoke
 
 # Run unit tests
-pnpm run test
-pnpm run test:python
+pnpm run test              # TypeScript/JavaScript tests
+pnpm run test:python       # Python tests
 
 # Test individual components
-pnpm run ai:text
-pnpm run tts
+pnpm run ai:text           # Test AI generation
+pnpm run tts              # Test voice synthesis
+```
+
+### Test Structure
+```
+tests/
+├── fixtures/              # Test media files and data
+├── python/                # Python unit tests
+├── typescript/            # TypeScript test utilities
+└── integration/           # End-to-end smoke tests
 ```
 
 ## 📁 Output Structure
