@@ -1,5 +1,9 @@
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
+import { config } from "dotenv";
+
+// Load environment variables from .env.local
+config({ path: ".env.local" });
 
 export type VoiceInput = {
   text: string;

@@ -95,10 +95,29 @@ def main() -> None:
     p.add_argument("--clip", type=Path, required=True, help="Input video clip")
     p.add_argument("--srt", type=Path, required=True, help="Output SRT file")
     p.add_argument("--mode", choices=["from-audio", "from-text"], required=True, help="Generation mode")
-    p.add_argument("--text", type=str, help="Text for from-text mode")
+    p.add_argument("--text-file", type=Path, help="Text file for from-text mode")
+    p.add_argument("--text", type=str, help="Text content for from-text mode")
+    p.add_argument("--whisper-model", default="small", help="Whisper model for from-audio mode")
+    p.add_argument("--max-chars", type=int, default=84, help="Maximum characters per line")
+    p.add_argument("--max-lines", type=int, default=2, help="Maximum lines per subtitle")
+    p.add_argument("--min-dur", type=float, default=1.6, help="Minimum subtitle duration")
+    p.add_argument("--max-dur", type=float, default=4.0, help="Maximum subtitle duration")
+    p.add_argument("--force", action="store_true", help="Overwrite existing files")
     args = p.parse_args()
     
-    generate_srt(args.clip, args.srt, args.mode, args.text)
+    # Get text content
+    text = None
+    if args.mode == "from-text":
+        if args.text_file:
+            with open(args.text_file, 'r', encoding='utf-8') as f:
+                text = f.read().strip()
+        elif args.text:
+            text = args.text
+        else:
+            print("❌ Text content required for from-text mode (use --text-file or --text)")
+            exit(1)
+    
+    generate_srt(args.clip, args.srt, args.mode, text)
 
 
 if __name__ == "__main__":

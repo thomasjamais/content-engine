@@ -27,6 +27,12 @@ describe("generateNarration", () => {
     expect(result).toHaveProperty("caption");
     expect(result).toHaveProperty("hashtags");
     expect(result.hashtags.length).toBeGreaterThanOrEqual(6);
+    expect(result.hashtags.length).toBeLessThanOrEqual(20);
+
+    // Check word count (90-120 words)
+    const wordCount = result.narration.split(" ").length;
+    expect(wordCount).toBeGreaterThanOrEqual(90);
+    expect(wordCount).toBeLessThanOrEqual(120);
   });
 
   it("should handle OpenAI API errors gracefully", async () => {
@@ -61,5 +67,32 @@ describe("generateNarration", () => {
 
     expect(result).toHaveProperty("title");
     expect(result.title).toBe("Breath with the Ocean");
+  });
+
+  it("should validate output schema", async () => {
+    const result = await generateNarration({
+      lang: "en",
+      style: "zen",
+      durationSec: 20,
+    });
+
+    // Check required fields
+    expect(typeof result.title).toBe("string");
+    expect(result.title.length).toBeGreaterThan(0);
+
+    expect(typeof result.narration).toBe("string");
+    expect(result.narration.length).toBeGreaterThan(0);
+
+    expect(typeof result.caption).toBe("string");
+    expect(result.caption.length).toBeGreaterThan(0);
+
+    expect(Array.isArray(result.hashtags)).toBe(true);
+    expect(result.hashtags.length).toBeGreaterThanOrEqual(6);
+    expect(result.hashtags.length).toBeLessThanOrEqual(20);
+
+    // Check hashtag format
+    result.hashtags.forEach((tag) => {
+      expect(tag).toMatch(/^#/);
+    });
   });
 });

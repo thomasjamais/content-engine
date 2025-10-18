@@ -11,11 +11,14 @@
     "test:python": "cd services/vision && python -m pytest",
     "ingest": "python3 services/vision/ingest.py --input ./samples/raw/video1.mp4 --out ./samples/clips --min 12 --max 45 --top 8",
     "build:short": "python3 services/montage/auto_edit.py --clip ./samples/clips/clip01.mp4 --out ./samples/shorts/clip01_final.mp4",
+    "sprint3": "python3 services/montage/sprint3_auto_edit.py --clip ./samples/clips/clip01.mp4 --voice ./samples/tts/clip01.wav --music ./samples/music/ambient01.mp3 --srt ./samples/subs/clip01.srt --title 'Breath with the Ocean' --watermark ./assets/logo.png --out ./samples/shorts/clip01_final.mp4 --target-lufs -14 --duck-threshold -20 --duck-ratio 8 --duck-attack 0.02 --duck-release 0.3",
     "pipeline": "node apps/worker/index.cjs ./samples/raw/video1.mp4 --output-dir ./samples",
     "pipeline:help": "node apps/worker/index.js --help",
     "subtitles": "python3 services/vision/subtitles.py --clip ./samples/clips/clip01.mp4 --srt ./samples/subs/clip01.srt --mode from-text --text 'Sample narration text'",
     "tts": "node -e \"import('./services/tts/voice_gen.js').then(async m => console.log(await m.synthesizeVoice({text:'Hello world', outPath:'./samples/tts/test.wav'})))\"",
-    "ai:text": "node -e \"import('./packages/ai/text.js').then(async m => console.log(await m.generateNarration({lang:'en',style:'zen',durationSec:20})))\""
+    "ai:text": "node -e \"import('./packages/ai/text.js').then(async m => console.log(await m.generateNarration({lang:'en',style:'zen',durationSec:20})))\"",
+    "ai:gen": "tsx packages/ai/bin/generate-text.ts",
+    "tts:gen": "tsx services/tts/bin/voice-gen.ts"
   },
   "keywords": [
     "video",
@@ -37,6 +40,7 @@
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "bullmq": "^5.61.0",
+    "dotenv": "^17.2.3",
     "ioredis": "^5.8.1",
     "openai": "^6.5.0",
     "zod": "^4.1.12"

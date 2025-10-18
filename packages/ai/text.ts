@@ -1,9 +1,13 @@
 import { z } from "zod";
+import { config } from "dotenv";
 import {
   narrationSystemPrompt,
   captionSystemPrompt,
   NarrationRequest,
 } from "../core/prompts";
+
+// Load environment variables from .env.local
+config({ path: ".env.local" });
 
 export type NarrationResult = {
   title: string;
@@ -61,7 +65,7 @@ async function generateWithOpenAI(
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "gpt-4",
+      model: "gpt-3.5-turbo", // Use gpt-3.5-turbo instead of gpt-4 for better compatibility
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },
@@ -71,7 +75,8 @@ async function generateWithOpenAI(
   });
 
   if (!response.ok) {
-    throw new Error(`OpenAI API error: ${response.status}`);
+    const errorText = await response.text();
+    throw new Error(`OpenAI API error: ${response.status} - ${errorText}`);
   }
 
   const data = await response.json();
