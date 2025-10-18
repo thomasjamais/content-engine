@@ -2,6 +2,8 @@
 
 A video-to-shorts pipeline for diving content that transforms long diving videos into social-ready shorts with AI-generated narration, voice synthesis, and automatic editing.
 
+🎬 **Turn your long-form diving footage into engaging social media shorts automatically** - from raw video input to polished 9:16 vertical videos with AI narration, subtitles, and background music.
+
 ## 🎯 Features
 
 - **Video Processing**: Automatic scene detection, clip selection, and vertical cropping
