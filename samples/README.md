@@ -1,0 +1,1 @@
+Place raw input videos in `samples/raw/`. Generated clips go to `samples/clips/`. Subtitles in `samples/subs/`.

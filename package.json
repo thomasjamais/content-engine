@@ -1,0 +1,44 @@
+{
+  "name": "content-engine",
+  "version": "1.0.0",
+  "description": "Video-to-shorts pipeline for diving content",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev:dashboard": "pnpm --filter @engine/dashboard dev",
+    "dev:worker": "pnpm --filter @engine/worker dev",
+    "test": "jest --passWithNoTests",
+    "test:python": "cd services/vision && python -m pytest",
+    "ingest": "python3 services/vision/ingest.py --input ./samples/raw/video1.mp4 --out ./samples/clips --min 12 --max 45 --top 8",
+    "build:short": "python3 services/montage/auto_edit.py --clip ./samples/clips/clip01.mp4 --out ./samples/shorts/clip01_final.mp4",
+    "pipeline": "node apps/worker/index.cjs ./samples/raw/video1.mp4 --output-dir ./samples",
+    "pipeline:help": "node apps/worker/index.js --help",
+    "subtitles": "python3 services/vision/subtitles.py --clip ./samples/clips/clip01.mp4 --srt ./samples/subs/clip01.srt --mode from-text --text 'Sample narration text'",
+    "tts": "node -e \"import('./services/tts/voice_gen.js').then(async m => console.log(await m.synthesizeVoice({text:'Hello world', outPath:'./samples/tts/test.wav'})))\"",
+    "ai:text": "node -e \"import('./packages/ai/text.js').then(async m => console.log(await m.generateNarration({lang:'en',style:'zen',durationSec:20})))\""
+  },
+  "keywords": [
+    "video",
+    "shorts",
+    "ai",
+    "content",
+    "pipeline"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20.0.0",
+    "eslint": "^9.38.0",
+    "jest": "^30.2.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "bullmq": "^5.61.0",
+    "ioredis": "^5.8.1",
+    "openai": "^6.5.0",
+    "zod": "^4.1.12"
+  }
+}

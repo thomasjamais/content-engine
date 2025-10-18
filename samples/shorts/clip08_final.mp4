@@ -1,0 +1,7 @@
+# Placeholder composition file
+# Input: samples/clips/clip08.mp4
+# Voice: samples/tts/clip08.wav
+# Music: samples/music/ambient01.mp3
+# Subtitles: samples/subs/clip08.srt
+# Would be: Final composed 9:16 video
+# Error: Command '['ffmpeg', '-y', '-i', 'samples/clips/clip08.mp4', '-i', 'samples/tts/clip08.wav', '-i', 'samples/music/ambient01.mp3', '-vf', "subtitles=samples/subs/clip08.srt:force_style='FontSize=24,PrimaryColour=&Hffffff,OutlineColour=&H000000,Outline=2'", '-af', '[0:a][1:a]amix=inputs=2:duration=first:dropout_transition=2[voice_music],[2:a]volume=0.3[music_quiet],[voice_music][music_quiet]amix=inputs=2:duration=first:dropout_transition=2[final_audio]', '-map', '0:v', '-map', '[final_audio]', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20', '-c:a', 'aac', '-b:a', '192k', '-r', '30', 'samples/shorts/clip08_final.mp4']' returned non-zero exit status 1.

@@ -1,0 +1,5 @@
+# Placeholder video file
+# Original: samples/raw/video1.mp4
+# Start: 120.0s, End: 150.0s, Duration: 30.0s
+# Would be: 1080x1920 vertical video
+# Error: Command '['ffmpeg', '-y', '-ss', '120.0', '-t', '30.0', '-i', 'samples/raw/video1.mp4', '-vf', 'scale=-2:1920,crop=1080:1920,fps=30', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20', '-c:a', 'aac', '-b:a', '192k', 'samples/clips/clip06.mp4']' returned non-zero exit status 1.
