@@ -401,7 +401,7 @@ class SmokeTest {
     }
   }
 
-  async fileExists(filePath: string) {
+  async fileExists(filePath) {
     try {
       await fs.access(filePath);
       return true;
@@ -410,7 +410,7 @@ class SmokeTest {
     }
   }
 
-  async runCommand(command: string, args: string[]) {
+  async runCommand(command, args) {
     return new Promise((resolve, reject) => {
       const process = spawn(command, args, {
         cwd: rootDir,
@@ -442,7 +442,7 @@ class SmokeTest {
     });
   }
 
-  async runNodeScript(script: string) {
+  async runNodeScript(script) {
     const scriptPath = path.join(this.tempDir, 'temp_script.mjs');
     await fs.writeFile(scriptPath, script, 'utf-8');
     
