@@ -264,3 +264,4 @@ function getArg(args: string[], flag: string): string | undefined {
   const index = args.indexOf(flag);
   return index !== -1 && index + 1 < args.length ? args[index + 1] : undefined;
 }
+

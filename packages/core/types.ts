@@ -34,6 +34,15 @@ export interface ScheduleRequest {
   hashtags?: string[];
 }
 
+export interface CreateJobRequest {
+  clipId: string;
+  platform: Platform;
+  scheduledAt?: string;
+  title?: string;
+  caption?: string;
+  hashtags?: string[];
+}
+
 export type ScheduleResponse = {
   ok: true;
   jobs: Array<{ 
@@ -68,6 +77,30 @@ export interface PublishResult {
   uploadUrl?: string;
   thumbnailUrl?: string;
   isDryRun?: boolean;
+}
+
+// Database models
+export interface Clip {
+  id: string;
+  name: string;
+  description?: string | null;
+  duration: number;
+  filePath: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Job {
+  id: string;
+  clipId: string;
+  platform: Platform;
+  status: JobStatus;
+  scheduledAt?: Date | null;
+  publishedAt?: Date | null;
+  externalId?: string | null;
+  error?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ClipMetadata {

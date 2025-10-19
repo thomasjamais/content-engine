@@ -148,3 +148,4 @@ async function logPublishRequest(entry: any): Promise<void> {
   const logFile = path.join(logDir, `${entry.platform}_${Date.now()}.json`);
   await fs.writeFile(logFile, JSON.stringify(entry, null, 2));
 }
+
