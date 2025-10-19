@@ -12,6 +12,7 @@ import { clsx } from 'clsx'
 
 const navigationItems = [
   { name: 'Clips', href: '/', icon: VideoIcon },
+  { name: 'Drive', href: '/drive', icon: VideoIcon },
   { name: 'Schedule', href: '/schedule', icon: CalendarIcon },
   { name: 'Jobs', href: '/jobs', icon: BriefcaseIcon },
   { name: 'Settings', href: '/settings', icon: SettingsIcon },

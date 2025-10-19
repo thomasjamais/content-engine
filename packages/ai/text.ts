@@ -149,24 +149,38 @@ async function generateWithGemini(
 }
 
 async function generateStub(req: NarrationRequest): Promise<NarrationResult> {
-  const out = {
-    title: "Breath with the Ocean",
-    narration:
-      "Dive deep into the tranquil waters where time slows and the world above fades away. Feel the gentle rhythm of your breath as you explore the underwater realm, surrounded by vibrant coral and curious marine life. Each moment beneath the surface is a meditation, a chance to connect with the ancient rhythms of the sea. Let the weightlessness carry you as you discover the hidden beauty that lies beneath the waves.",
-    caption:
-      "Experience the serenity of underwater exploration. Dive into a world of peace and wonder.",
-    hashtags: [
-      "#ocean",
-      "#diving",
-      "#underwater",
-      "#meditation",
-      "#nature",
-      "#peace",
-      "#marine",
-      "#serenity",
-      "#breath",
-      "#calm",
-    ],
+  // Fallback for when no API keys are configured
+  const templates = {
+    zen: {
+      en: {
+        title: "Breath with the Ocean",
+        narration: "Dive deep into the tranquil waters where time slows and the world above fades away. Feel the gentle rhythm of your breath as you explore the underwater realm, surrounded by vibrant coral and curious marine life. Each moment beneath the surface is a meditation, a chance to connect with the ancient rhythms of the sea. Let the weightlessness carry you as you discover the hidden beauty that lies beneath the waves.",
+        caption: "Experience the serenity of underwater exploration. Dive into a world of peace and wonder.",
+        hashtags: ["#ocean", "#diving", "#underwater", "#meditation", "#nature", "#peace", "#marine", "#serenity", "#breath", "#calm"]
+      },
+      fr: {
+        title: "Respire avec l'Océan",
+        narration: "Plongez profondément dans les eaux tranquilles où le temps ralentit et le monde d'en haut s'estompe. Ressentez le rythme doux de votre respiration alors que vous explorez le royaume sous-marin, entouré de coraux vibrants et de vie marine curieuse. Chaque moment sous la surface est une méditation, une chance de se connecter aux rythmes anciens de la mer. Laissez l'apesanteur vous porter tandis que vous découvrez la beauté cachée qui réside sous les vagues.",
+        caption: "Découvrez la sérénité de l'exploration sous-marine. Plongez dans un monde de paix et d'émerveillement.",
+        hashtags: ["#océan", "#plongée", "#sousmarin", "#méditation", "#nature", "#paix", "#marin", "#sérénité", "#respiration", "#calme"]
+      }
+    },
+    adventure: {
+      en: {
+        title: "Ocean Adventures Await",
+        narration: "Gear up for the ultimate underwater adventure! Descend into crystal-clear waters where every dive reveals new mysteries and excitement. Navigate through dramatic underwater landscapes, encounter magnificent sea creatures, and push the boundaries of exploration. This is more than diving - this is discovering uncharted territories beneath the waves, where adrenaline meets the beauty of the deep blue sea.",
+        caption: "Ready for the ultimate diving adventure? The ocean's mysteries await your discovery!",
+        hashtags: ["#adventure", "#diving", "#exploration", "#ocean", "#extreme", "#underwater", "#thrill", "#discovery", "#adrenaline", "#marine"]
+      },
+      fr: {
+        title: "Aventures Océaniques",
+        narration: "Préparez-vous pour l'ultime aventure sous-marine ! Descendez dans des eaux cristallines où chaque plongée révèle de nouveaux mystères et excitations. Naviguez à travers des paysages sous-marins dramatiques, rencontrez des créatures marines magnifiques, et repoussez les limites de l'exploration. C'est plus que de la plongée - c'est découvrir des territoires inexplorés sous les vagues, où l'adrénaline rencontre la beauté du grand bleu.",
+        caption: "Prêt pour l'ultime aventure de plongée ? Les mystères de l'océan attendent votre découverte !",
+        hashtags: ["#aventure", "#plongée", "#exploration", "#océan", "#extrême", "#sousmarin", "#frisson", "#découverte", "#adrénaline", "#marin"]
+      }
+    }
   };
-  return ResultSchema.parse(out);
+
+  const template = templates[req.style]?.[req.lang] || templates.zen.en;
+  return ResultSchema.parse(template);
 }

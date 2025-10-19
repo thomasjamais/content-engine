@@ -1,10 +1,5 @@
 {
-  "/api/clips/route": "app/api/clips/route.js",
-  "/api/jobs/route": "app/api/jobs/route.js",
-  "/api/settings/route": "app/api/settings/route.js",
-  "/_not-found/page": "app/_not-found/page.js",
   "/page": "app/page.js",
   "/schedule/page": "app/schedule/page.js",
-  "/jobs/page": "app/jobs/page.js",
   "/settings/page": "app/settings/page.js"
 }

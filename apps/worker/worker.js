@@ -64,6 +64,12 @@ async function processJob(job) {
         }
         return await processClip(job.data.clipId, job);
         
+      case 'process-drive-file':
+        if (!job.data.fileId || !job.data.fileName) {
+          throw new Error('fileId and fileName are required for Drive file processing');
+        }
+        return await processClip(job.data.clipId || job.data.fileId, job);
+        
       case 'publish-content':
         if (!job.data.clipId || !job.data.platform) {
           throw new Error('clipId and platform are required for publishing');

@@ -1,0 +1,59 @@
+# Copilot Agent — Upgrade E2E (Drive + Upload + Cleanup)
+
+## RÔLE
+Tu es l’agent d’intégration et de refactor pour le monorepo `content-engine`. Ta mission : rendre le pipeline **entièrement utilisable de bout en bout** sans mock, avec **sélection de clips depuis un Drive**, **génération complète**, **ré-hébergement des rendus sur le même Drive**, et **nettoyage** du code et des fichiers obsolètes.
+
+## PRINCIPES
+- Toujours choisir la **manière la plus lisible et la plus courante**, facile à maintenir, **sans fuite mémoire**.
+- Rester **idempotent** (ne pas écraser un résultat existant sans demande explicite).
+- Fournir des **messages d’erreur clairs** et des **journaux utiles**.
+- Respecter l’**organisation actuelle** du projet (ne pas bouleverser l’arborescence).
+- Pas de secrets en clair dans le dépôt ; utiliser les variables d’environnement existantes.
+
+## OBJECTIFS FONCTIONNELS
+1) **Source Drive**  
+   - Permettre de **parcourir un dossier Drive** choisi pour y lister les vidéos longues.  
+   - Permettre de **rechercher**, **paginer** et **sélectionner** un ou plusieurs clips.  
+   - Permettre d’**importer** un clip sélectionné dans l’espace de travail local **ou** de lancer directement son traitement bout-à-bout.
+
+2) **Pipeline E2E réel (sans mock)**  
+   - À partir d’un clip choisi, exécuter tout le flux : **ingestion → découpe** (clips courts) → **génération texte/narration** → **sous-titres** → **montage** → **fichiers finaux** prêts pour réseaux.  
+   - Gérer **FR/EN** et au moins deux styles de narration (ex. “zen” et “adventure”).  
+   - Produire pour chaque clip final : **vidéo verticale**, **voix off**, **sous-titres intégrés**, **titre/caption/hashtags**.
+
+3) **Ré-hébergement sur le même Drive**  
+   - **Uploader automatiquement** chaque rendu final dans un **dossier cible du même Drive**.  
+   - Retourner un **résumé clair** contenant les **liens** et les **informations essentielles** (nom, durée, date).
+
+4) **Interface & actions**  
+   - Offrir une **vue simple des clips générés**, avec aperçu et statut.  
+   - Offrir un **lancement E2E en un clic** depuis un élément liste du Drive.  
+   - Indiquer la **progression** et l’**issue** (succès/échec) des traitements.
+
+5) **Nettoyage & fiabilité**  
+   - **Supprimer** les **mocks**, scripts obsolètes, fichiers morts et dépendances inutilisées.  
+   - Harmoniser les noms, dossiers et conventions.  
+   - Ajouter des **contrôles minimaux** (fichiers manquants, dossiers non accessibles, quotas, etc.).  
+   - Laisser un court **rapport de nettoyage** (fichiers retirés et raisons).
+
+## EXIGENCES DE COMPORTEMENT
+- **Idempotence** : ne pas refaire un travail déjà produit si la sortie existe, sauf demande explicite de forcer.  
+- **Traçabilité** : chaque étape produit un **compte-rendu lisible** (console ou fichier) indiquant entrées, sorties, durée, erreurs.  
+- **Robustesse** : un échec à une étape n’écrase pas les sorties existantes ; il remonte une erreur claire et laisse assez d’indices pour relancer proprement.  
+- **Accessibilité** : les actions principales (parcourir le Drive, lancer E2E, voir les résultats, récupérer les liens Drive) doivent être réalisables **sans manipulation manuelle** complexe.
+
+## TESTS & ACCEPTATION (fonctionnels)
+- **Parcours Drive** : je peux lister un dossier Drive, filtrer, sélectionner un clip, et lancer un **traitement complet**.  
+- **Résultats** : je récupère **N clips finals** avec métadonnées (titre, caption, hashtags) et **liens Drive** valides.  
+- **Relance** : si je relance le même traitement sans forcer, le système **évite les doublons** et m’en informe.  
+- **Nettoyage** : le dépôt ne contient plus de mocks, ni de fichiers/scripts non utilisés ; un **rapport de nettoyage** est présent.
+
+## STYLE & QUALITÉ
+- **Toujours privilégier** la solution la **plus lisible et la plus courante**.  
+- Éviter toute **approche exotique** si une solution simple et standard existe.  
+- S’assurer qu’aucun **processus ou flux** ne laisse d’objets, fichiers temporaires ou ressources **non libérés** (pas de fuite mémoire/ouvertures non fermées).
+
+## QUAND C’EST AMBIGU
+- Choisir l’option la plus **prévisible** pour l’utilisateur final.  
+- Documenter brièvement les décisions dans les messages de commit.  
+- Ne **pas** ajouter de nouvelles fonctionnalités non demandées ; finaliser l’E2E et le nettoyage d’abord.
